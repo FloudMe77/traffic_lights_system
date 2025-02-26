@@ -17,6 +17,8 @@ public class FileReaderIterator implements Iterable<Command> {
         this.iterator = commands.iterator();
     }
 
+
+    // pobieram dane z pliku
     private List<JsonElement> loadCommands(String filePath) {
         try (FileReader reader = new FileReader(filePath)) {
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
@@ -27,6 +29,7 @@ public class FileReaderIterator implements Iterable<Command> {
         }
     }
 
+    // implementacja Iterator pozwala na for each
     @Override
     public Iterator<Command> iterator() {
         return new Iterator<>() {
@@ -39,7 +42,7 @@ public class FileReaderIterator implements Iterable<Command> {
             public Command next() {
                 JsonObject commandObject = iterator.next().getAsJsonObject();
                 String type = commandObject.get("type").getAsString();
-
+                // rozpatruje komende
                 if ("addVehicle".equals(type)) {
                     return gson.fromJson(commandObject, Command.class);
                 } else if ("step".equals(type)) {

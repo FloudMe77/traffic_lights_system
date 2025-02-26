@@ -6,6 +6,7 @@ import org.example.SimulationTools.SimulationUtils.Road;
 import java.util.List;
 
 public class LightPrinter {
+    // wypisuje stan świateł na skrzyżowaniu
     public void printLight(List<Road> roads) {
         for (Road road : roads) {
             for (Lane lane : road.getLanes()) {

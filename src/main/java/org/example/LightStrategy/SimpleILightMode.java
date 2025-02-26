@@ -46,6 +46,7 @@ public class SimpleILightMode implements ILightSystem {
 
     @Override
     public List<List<InOutPairDirection>> getDirectionsToChange(int actualStepCount) {
+        // co interval zmieniam układ świateł
         this.actualStepCount = actualStepCount;
         int index = (actualStepCount % (ALLOWED_DIRECTIONS_CYCLE.size() * interval)) / interval;
         return List.of(ALLOWED_DIRECTIONS_CYCLE.get(index), CONDITIONAL_DIRECTIONS_CYCLE.get(index));
@@ -62,6 +63,7 @@ public class SimpleILightMode implements ILightSystem {
 
     @Override
     public List<Direction> getActualPedestrianDirections() {
+        // sprawdzam, czy bardziej opłaca się warunkowa strzałka, czy przepuszczenie pieszych
         List<Direction> pedestrianDirections = new ArrayList<>();
         int index = (actualStepCount % (ALLOWED_DIRECTIONS_CYCLE.size() * interval)) / interval;
         for(var direction : CONDITIONAL_PEDESTRIAN_CYCLE.get(index)) {

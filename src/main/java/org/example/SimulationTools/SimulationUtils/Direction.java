@@ -1,6 +1,7 @@
 package org.example.SimulationTools.SimulationUtils;
 
 public enum Direction {
+    // enum reprezentujący kierunki (dróg)
     SOUTH, NORTH, WEST, EAST;
 
     public static Direction parseStringToDirection(String str) {

@@ -1,6 +1,7 @@
 package org.example.SimulationTools.SimulationUtils;
 
 public class Pedestrian {
+    // reprezentuje pieszego o odpowiednich atrybutach
     private final Road crossroad;
     private final String id;
     private final int stepCountAdded;

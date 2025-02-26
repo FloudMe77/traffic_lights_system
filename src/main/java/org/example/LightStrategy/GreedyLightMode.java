@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class GreedyLightMode implements ILightSystem {
     // Symulacja każdego ruchu w celu znalezienia najlepszego efektu
+    // deklaracja możliwych ułożeń świteł
     private static final List<List<InOutPairDirection>> ALLOWED_DIRECTIONS_CYCLE = List.of(
             // STRAITH LINE
             List.of(InOutPairDirection.N_S, InOutPairDirection.S_N),
@@ -61,6 +62,7 @@ public class GreedyLightMode implements ILightSystem {
         this.roadsMap = roadsMap;
         for (Road road : roadsMap.values()) {
             for (Lane lane : road.getLanes()) {
+                // zerowanie słownika proirytetu
                 rankedLanes.put(lane, 0);
             }
         }
@@ -68,28 +70,32 @@ public class GreedyLightMode implements ILightSystem {
 
     public boolean shouldChangeLights(int actualStepCount) {
         this.actualStepCount = actualStepCount;
+        // zwiększanie priorytetu za każdy pojazd na pasie
         rankedLanes.replaceAll((lane, value) -> value + lane.getVehiclesSize());
 
         int maxScore = 0;
         int index = 0;
 
+        // rozpatruje każdy możliwy układ świateł i wybieram najkorzystniejszy
         for (var allowedDirections : ALLOWED_DIRECTIONS_CYCLE) {
             List<Direction> usedExits = new ArrayList<>();
             List<Direction> pedestrianAllowedDirections = new ArrayList<>();
+            // wynik z samych świreł
             int score = allowedDirections.stream()
                     .mapToInt(dir -> getScoreFromAllowedDirection(dir, usedExits))
                     .sum();
 
+            // wynik ze strzałek skrętu w prawo i priorytetu pieszych
             int finalIndex = index;
             score += CONDITIONAL_DIRECTIONS_CYCLE.get(index).stream()
                     .mapToInt(dir -> getScoreFromConditionDirection(dir, usedExits, CONDITIONAL_PEDESTRIAN_CYCLE.get(finalIndex), pedestrianAllowedDirections))
                     .sum();
-
+            // wybieram najlepszy
             if (score > maxScore) {
                 maxScore = score;
                 bestIndex = index;
-                if(!pedestrianAllowedDirections.isEmpty()) {
-                    System.out.println(index+" "+pedestrianAllowedDirections);
+                if (!pedestrianAllowedDirections.isEmpty()) {
+                    System.out.println(index + " " + pedestrianAllowedDirections);
                 }
                 actualPedestrianDirections = pedestrianAllowedDirections;
             }
@@ -98,7 +104,6 @@ public class GreedyLightMode implements ILightSystem {
 
         boolean hasChanged = (bestIndex != prevIndex);
         prevIndex = bestIndex;
-        System.out.println(rankedLanes);
         return hasChanged;
     }
 
@@ -108,6 +113,7 @@ public class GreedyLightMode implements ILightSystem {
     }
 
     private int getScoreFromAllowedDirection(InOutPairDirection inOutPairDirection, List<Direction> usedExits) {
+        // obliczam wynik tego układu świateł
         return roadsMap.get(inOutPairDirection.getStartDirection()).getLanes().stream()
                 .filter(lane -> !lane.isEmpty() && lane.getFirst().getEndDirection().equals(inOutPairDirection.getEndDirection()))
                 .peek(lane -> usedExits.add(lane.getFirst().getEndDirection()))
@@ -116,6 +122,7 @@ public class GreedyLightMode implements ILightSystem {
     }
 
     private int getPedestrianScore(Direction direction) {
+        // pobieram priorytet z pieszych
         return roadsMap.get(direction).getPedestrianScore(actualStepCount);
     }
 
@@ -123,12 +130,13 @@ public class GreedyLightMode implements ILightSystem {
                                                List<Direction> usedExits,
                                                List<Direction> pedestrianDirections,
                                                List<Direction> pedestrianAllowedDirections) {
+        // pobieram priorytet pieszych
         int pedestrianScore = 0;
         if (pedestrianDirections.contains(conditionInOutPair.getEndDirection())) {
             pedestrianScore = getPedestrianScore(conditionInOutPair.getEndDirection());
         }
 
-
+        // priorytet aut, które mogłyby przejechać
         int carsGoScore = roadsMap.get(conditionInOutPair.getStartDirection()).getLanes().stream()
                 .filter(lane -> !lane.isEmpty()
                         && lane.getFirst().getEndDirection().equals(conditionInOutPair.getEndDirection())
@@ -137,6 +145,7 @@ public class GreedyLightMode implements ILightSystem {
                 .mapToInt(rankedLanes::get)
                 .sum();
 
+        // zwracam korzystniejszy
         if (carsGoScore >= pedestrianScore) {
             return carsGoScore;
         } else {
@@ -146,10 +155,11 @@ public class GreedyLightMode implements ILightSystem {
     }
 
     public void decreaseRankedLane(int actualStepCount, Vehicle vehicle) {
+        // obniżanie priorytetu pasa, kiedy auto przejedzie
         Lane lane = vehicle.getOnLane();
         rankedLanes.put(lane, rankedLanes.get(lane) - (-vehicle.getStepCountAdded() + actualStepCount + 1));
     }
-    
+
     public List<Direction> getActualPedestrianDirections() {
         return actualPedestrianDirections;
     }

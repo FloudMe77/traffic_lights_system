@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum InOutPairDirection {
+    // enum agregujący pary kierunków (wjazd, wyjazd)
     N_S(Direction.NORTH, Direction.SOUTH),
     S_N(Direction.SOUTH, Direction.NORTH),
     E_W(Direction.EAST, Direction.WEST),

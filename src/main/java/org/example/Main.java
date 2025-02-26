@@ -15,17 +15,19 @@ public class Main {
             return;
         }
 
+        // deklaracja konfigu
         Config config = new Config(Map.of(Direction.NORTH, List.of(0, 0, 0, 0, 0, 1),
                 Direction.SOUTH, List.of(0, 0, 0, 0, 0, 1),
                 Direction.EAST, List.of(0, 0, 0, 0, 0, 1),
                 Direction.WEST, List.of(0, 0, 0, 0, 0, 1)));
+        // sprawdzanie poprawności konfigu
         try{
             ConfigChecker.check(config);
         } catch (IncorrectConfigException e) {
             System.out.println(e.getMessage());
             System.exit(1);
         }
-
+        // uruchomienie sumulacji
         var simulation = new Simulation(config, args[1]);
         simulation.start(args[0]);
     }

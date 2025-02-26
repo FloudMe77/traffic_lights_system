@@ -14,6 +14,7 @@ public class LightChanger {
         this.roadsMap = roadsMap;
     }
 
+    // zmieniam główne światła na skrzyżowaniu
     public void changeLight(List<InOutPairDirection> inOutPairDirections) {
         for (var road : roadsMap.values()) {
             for (var lane : road.getLanes()) {
@@ -36,6 +37,7 @@ public class LightChanger {
             }
         }
     }
+    // zmieniam świecenie strałki warunkowej w prawo jeżeli ma to sens
     public void arrowChange(List<InOutPairDirection> conditionDirections, List<Direction> PedestrianDirections) {
         roadsMap.values().stream()
                 .filter(Road::isRightArrow) // Najpierw sprawdzamy, czy ma strzałkę
@@ -47,6 +49,8 @@ public class LightChanger {
                 })
                 .forEach(Road::changeRightArrowOn);
     }
+
+    // zmieniam świtło dla pieszych jeżeli ma to sens
     public void pedestrianLightChange(List<Direction> directionsOn) {
         roadsMap.values()
                 .stream()

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OptymalizedLightMode implements ILightSystem {
+    // deklaracja dostępnych ustawień świateł
     private static final List<List<InOutPairDirection>> ALLOWED_DIRECTIONS_CYCLE = List.of(
             // STRAITH LINE
             List.of(InOutPairDirection.N_S, InOutPairDirection.S_N),
@@ -45,13 +46,16 @@ public class OptymalizedLightMode implements ILightSystem {
 
     @Override
     public List<List<InOutPairDirection>> getDirectionsToChange(int actualStepCount) {
+        // zwiększam priorytet za każde auto na pasie
         rankedLanes.replaceAll((l, v) -> rankedLanes.get(l) + l.getVehiclesSize());
+        // wybieram pas najbardziej "oblężony"
         Lane bestLane = rankedLanes.entrySet().stream()
                 .max(Map.Entry.comparingByValue()) // Wybiera wpis o największej wartości
                 .map(Map.Entry::getKey)            // Pobiera klucz
                 .orElse(null);               // Jeśli mapa pusta, zwraca null
         assert bestLane != null;
 
+        // wybieram ułożenie świateł pod kątem najbardziej "oblężonego" pasa
         Direction neededFreeWay = bestLane.getFirst().getEndDirection();
         if (neededFreeWay.equals(bestLane.getFirst().getStartDirection())) {
             return switch (bestLane.getFirst().getEndDirection()) {

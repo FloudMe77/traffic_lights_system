@@ -3,12 +3,21 @@ package org.example.SimulationTools.SimulationUtils;
 import java.util.*;
 
 public class Road {
+    // reprezentuje jedną z drug do skrzyżowania
+
+    // liczba ludzi którzy przechodzą w ciągu jednego zielonego światła
     private static final int NUMBER_OF_PEDESTRIAN_GET = 5;
+    // lista pasów, które są na tej drodze
     private final List<Lane> laneList= new ArrayList<>();
+    // kolejka osób do przejścia
     private final Queue<Pedestrian> pedestrianQueue = new ArrayDeque<>();
+    // z której strony idzie droga
     private final Direction direction;
+    // czy sygnalizator ma strzałke warunkową
     private boolean rightArrow = true;
+    // czy strzałka jest włączona
     private boolean isRightArrowOn = false;
+    // czy zapalone jest światło dla pieszych
     private boolean isPedestrianLightOn = false;
 
     public Road(Direction direction,List<Integer> lineNumbers) {
@@ -16,6 +25,7 @@ public class Road {
         int cnt = 0;
         for (int lineNumber : lineNumbers) {
             for(int i=0;i<lineNumber;i++) {
+                // rozszyfrowanie danych z config, każdy numer reprezentuje jaka jest możliwość skrętu z tego pasa
                 Lane newLane=switch (cnt){
                     case 0 -> new Lane(direction,List.of(direction.next())); // left
                     case 1 -> new Lane(direction,List.of(direction.opposite())); // forword
@@ -41,6 +51,7 @@ public class Road {
         pedestrianQueue.add(pedestrian);
     }
 
+    // pobieram ludzi oczekujących na przejście
     public List<Pedestrian> getPedestrians() {
         List<Pedestrian> pedestrians = new ArrayList<>();
         Iterator<Pedestrian> iterator = pedestrianQueue.iterator();
@@ -52,6 +63,7 @@ public class Road {
         return pedestrians;
     }
 
+    // pobieram ludzi oczekujących na przejście i usuwam ich z kolejki
     public List<Pedestrian> getAndPopPedestrians() {
         List<Pedestrian> pedestrians = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_PEDESTRIAN_GET && !pedestrianQueue.isEmpty(); i++) {
@@ -88,6 +100,7 @@ public class Road {
     public boolean isPedestrianLightOn() {
         return isPedestrianLightOn;
     }
+    // obliczam wartość priorytetu przejścia przez pasy w trakcie jednego zielonego świtła
     public int getPedestrianScore(int actualStepCount) {
         return getPedestrians()
                 .stream()

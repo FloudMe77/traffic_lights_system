@@ -1,6 +1,7 @@
 package org.example.SimulationTools;
 
 public enum SignalColor {
+    // enum reprezentujący kolor sygnalizacji
     RED,
     RED_YELLOW,
     GREEN,

@@ -14,9 +14,7 @@ public class Lane {
         this.startRoad = startRoad;
         this.endRoad = endRoad;
         for(Direction direction : endRoad) {
-
                 signalColors.put(direction, null);
-
         }
 
     }
@@ -78,9 +76,11 @@ public class Lane {
     public void setSignalColor(Direction direction, SignalColor color){
         signalColors.put(direction, color);
     }
+    // ustawienie następnego koloru cyklu
     public void setNextSignalColor(Direction direction){
         signalColors.put(direction,signalColors.get(direction).next());
     }
+    // czy można zastąpić przez jeden sygnalizator
     public boolean sameAllLights(){
         return signalColors.values().stream().distinct().count() <= 1;
     }
