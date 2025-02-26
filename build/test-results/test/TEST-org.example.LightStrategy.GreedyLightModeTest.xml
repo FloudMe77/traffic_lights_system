@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.example.LightStrategy.GreedyLightModeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-02-26T13:41:03" hostname="DESKTOP-QAGOEUU" time="0.044">
+  <properties/>
+  <testcase name="testGetActualPedestrianDirections()" classname="org.example.LightStrategy.GreedyLightModeTest" time="0.02"/>
+  <testcase name="testShouldChangeLights()" classname="org.example.LightStrategy.GreedyLightModeTest" time="0.019"/>
+  <testcase name="testDecreaseRankedLane()" classname="org.example.LightStrategy.GreedyLightModeTest" time="0.002"/>
+  <system-out><![CDATA[{[WEST, NORTH, EAST]{NORTH=null, EAST=null, WEST=null}=0, [EAST, SOUTH, WEST]{SOUTH=null, EAST=null, WEST=null}=0}
+SOUTH: {NORTH=null, EAST=null, WEST=null} IsRightArrowOn: false IsPedestrainLightOn: false
+IsRightArrowOn: false IsPedestrainLightOn: false
+IsRightArrowOn: false IsPedestrainLightOn: false
+NORTH: {SOUTH=null, EAST=null, WEST=null} IsRightArrowOn: false IsPedestrainLightOn: false
+
+{[WEST, NORTH, EAST]{NORTH=null, EAST=null, WEST=null}=0, [EAST, SOUTH, WEST]{SOUTH=null, EAST=null, WEST=null}=-3}
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

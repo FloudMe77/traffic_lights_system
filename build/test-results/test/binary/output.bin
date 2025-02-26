@@ -1,0 +1,7 @@
+t{[WEST, NORTH, EAST]{NORTH=null, EAST=null, WEST=null}=0, [EAST, SOUTH, WEST]{SOUTH=null, EAST=null, WEST=null}=0}
+\SOUTH: {NORTH=null, EAST=null, WEST=null} IsRightArrowOn: false IsPedestrainLightOn: false
+2IsRightArrowOn: false IsPedestrainLightOn: false
+2IsRightArrowOn: false IsPedestrainLightOn: false
+\NORTH: {SOUTH=null, EAST=null, WEST=null} IsRightArrowOn: false IsPedestrainLightOn: false
+
+u{[WEST, NORTH, EAST]{NORTH=null, EAST=null, WEST=null}=0, [EAST, SOUTH, WEST]{SOUTH=null, EAST=null, WEST=null}=-3}
